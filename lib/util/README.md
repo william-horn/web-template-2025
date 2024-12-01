@@ -3,7 +3,7 @@
 
 ## `mergeClasses(baseClass, importedClass, customSpecialKeys)`
 
-Merges `importedClass` into a copy of `baseClass` and returns that copy. Both classes are nested objects with the following structure:
+Merges `importedClass` into a copy of `baseClass` and returns that copy. Used for packaging **tailwind classes** together for components containing multiple elements that need to be individually reached for custom styling.
 
 * **Arguments:**
   - `baseClass<Object>` - The original class object
@@ -30,15 +30,69 @@ Merges `importedClass` into a copy of `baseClass` and returns that copy. Both cl
 ### **Ex:**
 
 ```js
-{
-  self: "tw-class class-2 class-3",
-  prop: {
-    self: "class-a class-b"
-  },
+const stateObj = [
+  ["selected", { self: "class-c" }]
+]
+
+const classOne = {
+  self: "class-1",
+}
+
+const classTwo = {
+  self: "class-2"
 
   // special field
-  $state: [
-    ["selected", { self: "class-c" }]
-  ]
+  $state: stateObj
+}
+
+mergeClasses(classOne, classTwo)
+```
+
+Internally, `mergeClasses()` will call this callback function when it reaches the `$state` field:
+
+```js
+customSpecialKeys.state(
+  classTwo,
+  "$state",
+  undefined,
+  stateObj
+)
+```
+
+Custom special keys can be passed to `mergeClasses()` as an optional third argument defined as `customSpecialKeys`. This argument is set to `{}` by default.
+
+### **Ex:**
+
+```js
+const classOne = {
+  self: "class-1",
+}
+
+const classTwo = {
+  self: "class-2"
+
+  // special field
+  $customKey: "Hello, world"
+}
+
+const outputClass = mergeClasses(
+  classOne, 
+  classTwo,
+  {
+    customKey: (directory, key, baseValue, importedValue) => {
+      // baseValue: undefined
+      // importedValue: "Hello, world"
+      directory[key] = "custom value"
+    }
+  }
+)
+```
+
+The resulting `outputClass` object will look like this:
+
+```js
+{
+  self: "class-2",
+  $customKey: "custom value"
 }
 ```
