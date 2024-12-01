@@ -12,13 +12,18 @@ export default function Home() {
 
   return (
     <Page>
-      {/* <VerticalContent
-      state={{ selected: true, }}
-      className="p-5 bg-purple-400"
+      <Text state={{ selected: true }} className={{ self: "text-blue-400", $state: [["selected", { self: "text-white" }]] }}>LOL</Text>
+      
+      <VerticalContent
+      className=""
       >
-        <VerticalContent.Chunk>Hello</VerticalContent.Chunk>
-        <VerticalContent.Chunk>There</VerticalContent.Chunk>
-        <VerticalContent.Remaining>
+        <VerticalContent.Chunk 
+        state={{hover: true, selected: true}} 
+        className=""
+        >Hello</VerticalContent.Chunk>
+        
+        <VerticalContent.Remaining
+        >
           <Text textSize="xl" className="text-black">derp</Text>
           <Text textSize="xl" className="text-black">derp</Text>
           <Text textSize="xl" className="text-black">derp</Text>
@@ -28,7 +33,7 @@ export default function Home() {
           <Text textSize="xl" className="text-black">derp</Text>
           <Text textSize="xl" className="text-black">derp</Text>
         </VerticalContent.Remaining>
-      </VerticalContent> */}
+      </VerticalContent>
     </Page>
   );
 }

@@ -1,5 +1,4 @@
 
-
 // Components
 import Content from "./Content";
 
@@ -10,10 +9,24 @@ import { mergeClasses, compileClass } from "@/lib/util/merge-classes-v2";
 import React from 'react';
 
 export const VerticalContent__Chunk = ({
-  children
+  children,
+  className: importedClassName,
+  state: importedState,
+  ...rest
 }) => {
   return (
-    <Content className="w-full bg-red-500 vertical-content-chunk">
+    <Content 
+    className={
+      compileClass({
+        className: mergeClasses(
+          "w-full vertical-content-chunk", 
+          importedClassName
+        ),
+        state: importedState
+      }).self
+    }
+    {...rest}
+    >
       {children}
     </Content>
   );
@@ -22,13 +35,14 @@ export const VerticalContent__Chunk = ({
 export const VerticalContent__Remaining = ({
   children,
   className: importedClassName,
-  state: importedState
+  state: importedState,
+  ...rest
 }) => {
   const className = {
-    self: "relative w-full h-full bg-blue-400 vertical-content-remaining",
+    self: "relative w-full h-full vertical-content-remaining",
     inner: {
-      self: "absolute w-full h-full p-5 bg-green-400 vertical-content-inner",
-      body: { self: "h-full overflow-y-auto bg-purple-500 vertical-content-body" },
+      self: `absolute w-full h-full vertical-content-inner`,
+      body: { self: "h-full overflow-y-auto vertical-content-body" },
     }
   }
 
@@ -38,7 +52,10 @@ export const VerticalContent__Remaining = ({
   })
 
   return (
-    <Content className={finalClass.self}>
+    <Content 
+    className={finalClass.self} 
+    {...rest}
+    >
       <Content className={finalClass.inner.self}>
         <Content className={finalClass.inner.body.self}>
           {children}
@@ -55,7 +72,7 @@ export const VerticalContent = ({
   ...rest
 }) => {
   const className = {
-    self: "w-[200px] h-[300px] bg-white vertical-content-container flex flex-col"
+    self: "w-[200px] h-[300px] vertical-content-container flex flex-col"
   }
   
   const finalClass = compileClass({

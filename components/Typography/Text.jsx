@@ -1,22 +1,30 @@
 
-import { twMerge } from "tailwind-merge";
+// Reacts
 import React from "react";
+
+// Util
 import { getTextSize } from "@/lib/util/responsive";
+import { mergeClasses, compileClass } from "@/lib/util/merge-classes-v2";
 
 const Text = React.forwardRef(function({ 
   children, 
   textSize,
-  className: importedClassName="",
+  className: importedClassName,
+  state: importedState,
   ...rest
 }, ref) {
-
   return (
     <p 
     ref={ref}
-    className={twMerge(
-      `${getTextSize(textSize)} general-text !leading-[2] text-0 font-0 block align-middle`,
-      importedClassName
-    )}
+    className={
+      compileClass({
+        className: mergeClasses(
+          `${getTextSize(textSize)} general-text !leading-[2] text-0 font-0 block align-middle`,
+          importedClassName
+        ),
+        state: importedState
+      }).self
+    }
     {...rest}
     >
       {children}
