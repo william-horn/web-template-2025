@@ -1,7 +1,7 @@
 
 # **merge-classes-v2**
 
-## `mergeClasses(baseClass, importedClass, customSpecialKeys)`
+## `mergeClasses()`
 
 Merges `importedClass` into a copy of `baseClass` and returns that copy. Used for packaging **tailwind classes** together for components containing multiple elements that need to be individually reached for custom styling.
 
@@ -27,7 +27,7 @@ Merges `importedClass` into a copy of `baseClass` and returns that copy. Used fo
 
 `mergeClasses()` will scan objects for fields that begin with `$` - these are **reserved** field names that will trigger a callback function passing the current `directory` of the output class object, the `$keyName` of the field, the value of this field in the `baseClass` if it exists, and the value of this key in the `importedClass`.
 
-### **Ex:**
+### Ex:
 
 ```js
 const stateObj = [
@@ -96,3 +96,44 @@ The resulting `outputClass` object will look like this:
   $customKey: "custom value"
 }
 ```
+
+### **$state**
+
+The built-in special key `$state` will merge lists of state class objects together. A state class object is a class which only merges with the final output class when a certain state is active. 
+
+### Ex:
+
+```js
+const classOne = {
+  self: "bg-white",
+}
+
+const classTwo = {
+  self: "bg-black",
+
+  $state: [
+    ["selected", { self: "bg-red" }]
+  ]
+}
+
+// call compileClass() to pass the state object
+const outputClass = compileClass({
+  className: mergeClasses(classOne, classTwo),
+  state: {
+    selected: true
+  }
+})
+```
+
+The resulting output class will look like this:
+
+```js
+{
+  self: "bg-red",
+  $state: [
+    ["selected", { self: "bg-red" }]
+  ]
+}
+```
+
+Because the state `{ selected: true }` was passed to `compileClass()`, which merged the state's class to the final output class.
