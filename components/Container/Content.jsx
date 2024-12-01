@@ -1,20 +1,30 @@
 
-import { twMerge } from "tailwind-merge";
+// React
 import React from "react";
 
+// Util
 import { getWidth } from "@/lib/util/responsive";
+import { mergeClasses, compileClass } from "@/lib/util/merge-classes-v2";
 
 const Content = React.forwardRef(function({
   children,
-  responsiveWidth,
-  className: importedClassName="",
+  width,
+  className: importedClassName,
+  state: importedState,
   ...rest
 }, ref) {
-
   return (
     <div
     ref={ref}
-    className={twMerge(`content ${getWidth(responsiveWidth)}`, importedClassName)}
+    className={
+      compileClass({
+        className: mergeClasses(
+          `content ${getWidth(width)}`, 
+          importedClassName
+        ),
+        state: importedState,
+      }).self
+    }
     {...rest}
     >
       {children}

@@ -137,3 +137,21 @@ The resulting output class will look like this:
 ```
 
 Because the state `{ selected: true }` was passed to `compileClass()`, which merged the state's class to the final output class.
+
+Also works when both `baseClass` and `importedClass` are tailwind class strings:
+
+```js
+mergeClasses("tw-1", "tw-2") // -> { self: "tw-2" }
+```
+
+or 
+
+```js
+mergeClasses("tw-1", { self: "tw-2" }) // -> { self: "tw-2" }
+```
+
+or 
+
+```js
+mergeClasses({ self: "tw-1" }, "tw-2") // -> { self: "tw-2" }
+```

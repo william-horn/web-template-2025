@@ -40,6 +40,12 @@
   --scroll-bar-width: 8px;
 }
 
+
+/* WIREFRAME CLASS */
+.wireframe * {
+  outline: 1px solid red !important;
+} 
+
 /* DEFAULT INPUT */
 input {
   all: unset;
