@@ -20,20 +20,17 @@ export default function Home() {
     <Page>
       <Text state={{ selected: true }} className={{ self: "text-blue-400", $state: [["selected", { self: "text-white" }]] }}>LOL</Text>
 
-      <Providers.DropdownSelection value={{key: "drop"}}>
-        <ButtonGroup
-        state={{ groupSelected: false }}
-        defaultSelect={["3"]}
-        className={{
-          self: "p-4 bg-white",
-          
-        }}
-        >
-          <StatelessButton value={100} id="1" eventData={{thing: "lol"}} onClick={(e) => console.log("clicked it!: ", e)}>A BUTTON</StatelessButton>
-          <StatelessButton id="2">B BUTTON</StatelessButton>
-          <StatelessButton id="3">C BUTTON</StatelessButton>
-        </ButtonGroup>
-      </Providers.DropdownSelection>
+      <VerticalContent>
+        <VerticalContent.Remaining className={{ inner: { self: "p-3" } }}>
+          <ButtonGroup>
+            {new Array(10).fill('a').map((thing, i) => <StatelessButton id={i} key={i}>Number {i}</StatelessButton>)}
+          </ButtonGroup>
+        </VerticalContent.Remaining>
+      </VerticalContent>
+
+      <ButtonGroup className={{ self: "flex-row" }}>
+        {new Array(5).fill('a').map((thing, i) => <StatelessButton id={i} key={i}>Number {i}</StatelessButton>)}
+      </ButtonGroup>
 
 
       {/* <ButtonGroup

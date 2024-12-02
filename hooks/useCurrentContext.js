@@ -56,13 +56,17 @@ function Context(props) {
 }
 
 Context.prototype.validateProps = function() {
-  if (this.hasContext && !this.originalProps.id) {
+  if (this.hasContext && this.originalProps.id == null) {
     console.warn("No 'id' prop was given to sub-component - assigning 'default' by default.")
     this.updatedProps.id = "default"
   }
 }
 
-Context.prototype.getState = function() {
+Context.prototype.getState = function(stateName) {
+  if (stateName) {
+    return this.updatedProps.importedState[stateName]
+  }
+
   return this.updatedProps.importedState
 }
 

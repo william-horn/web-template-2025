@@ -50,12 +50,14 @@ export const StatelessButton = ({
     ...rest
   }).init()
 
-  const finalClass = compileClass({
-    className: mergeClasses(className, importedClassName),
-    state: currentContext.getState()
-  })
+  const finalClass = useMemo(() => {
+    console.log("changed", currentContext);
 
-  console.log(currentContext);
+    return compileClass({
+      className: mergeClasses(className, importedClassName),
+      state: currentContext.getState()
+    })
+  }, [currentContext.getState().selected])
 
   return (
     <button 
