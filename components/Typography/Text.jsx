@@ -4,7 +4,7 @@ import React from "react";
 
 // Util
 import { getTextSize } from "@/lib/util/responsive";
-import { mergeClasses, compileClass } from "@/lib/util/merge-classes-v2";
+import { mergeClasses, compileClass } from "@/lib/util/mergeClassesV2";
 
 const Text = React.forwardRef(function({ 
   children, 

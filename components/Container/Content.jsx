@@ -4,7 +4,7 @@ import React from "react";
 
 // Util
 import { getWidth } from "@/lib/util/responsive";
-import { mergeClasses, compileClass } from "@/lib/util/merge-classes-v2";
+import { mergeClasses, compileClass } from "@/lib/util/mergeClassesV2";
 
 const Content = React.forwardRef(function({
   children,

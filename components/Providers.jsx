@@ -1,26 +1,24 @@
 "use client"
 
 import { createContext, useContext } from "react";
-
-const providerNames = [
-  "ButtonGroup",
-  "VerticalContent",
-]
+import { ContextNames } from "@/enums/ContextNames";
 
 const contexts = {};
 const Providers = {};
 
-for (let providerName of providerNames) {
+for (let contextEnumName in ContextNames) {
+  const contextEnum = ContextNames[contextEnumName]
   const context = createContext();
-  contexts[providerName] = context;
 
-  Providers[providerName] = ({ children, value }) => (
+  contexts[contextEnum] = context;
+
+  Providers[contextEnumName] = ({ children, value }) => (
     <context.Provider value={value}>
       {children}
     </context.Provider>
   );
 }
 
-export const useComponentContext = providerName => useContext(contexts[providerName]);
+export const useComponentContext = contextEnum => useContext(contexts[contextEnum]);
 
 export default Providers;

@@ -3,12 +3,12 @@
 import Content from "./Content";
 
 // Util
-import { mergeClasses, compileClass } from "@/lib/util/merge-classes-v2";
+import { mergeClasses, compileClass } from "@/lib/util/mergeClassesV2";
 
 // React
 import React from 'react';
 
-export const VerticalContent__Chunk = ({
+export const VerticalContent__Section = ({
   children,
   className: importedClassName,
   state: importedState,
@@ -90,7 +90,7 @@ export const VerticalContent = ({
   );
 };
 
-VerticalContent.Chunk = VerticalContent__Chunk
+VerticalContent.Section = VerticalContent__Section
 VerticalContent.Remaining = VerticalContent__Remaining
 
 export default VerticalContent
