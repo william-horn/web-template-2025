@@ -7,13 +7,10 @@ import Link from "next/link";
 import Icon from "../Image/Icon";
 
 import { useContextController } from "@/hooks/useContextController";
-import { ContextNames } from "../Providers";
+import Providers, { ContextNames } from "../Providers";
 import ElementStates from "@/enums/ElementStates";
 import { ButtonGroupStates } from "@/lib/contextControllers/ButtonGroupController";
-
-export const ButtonStates = {
-  Selected: "Enum__ButtonSelected",
-}
+import { ButtonStates } from "@/lib/contextControllers/ButtonController";
 
 const className = {
   // the outer-most element of the button, or "master element"
@@ -96,7 +93,12 @@ export const StatelessButton = ({
   // mandatory contextController props
   className: importedClassName={},
   state: importedState={},
-  contextGroups=[ContextNames.ButtonGroup, ContextNames.DropdownSelection],
+
+  contextGroups=[ 
+    ContextNames.Button,
+    ContextNames.ButtonGroup, 
+    ContextNames.DropdownSelection
+  ],
 
   // Native react element props
   ...rest
@@ -108,7 +110,7 @@ export const StatelessButton = ({
     importedState,
     contextGroups,
     ...rest
-  })
+  }, ContextNames.Button)
 
   const finalClass = controller.useClassName([controller.getStateValues()])
 

@@ -4,7 +4,8 @@ import { createContext, useContext } from "react";
 
 export const ContextNames = {
   ButtonGroup: "Enum__ButtonGroup",
-  DropdownSelection: "Enum__DropdownSelection"
+  DropdownSelection: "Enum__DropdownSelection",
+  Button: "Enum__Button",
 }
 
 const contexts = {};
