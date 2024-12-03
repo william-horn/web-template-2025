@@ -24,6 +24,10 @@ module.exports = {
         "1-inset": "var(--bg-color-1-inset)",
         "2": "var(--bg-color-2)",
 
+        // buttons
+        "button-0": "var(--bg-button-color-0)",
+        "button-0-hover": "var(--bg-button-color-0-hover)",
+
         // Dividing lines
         "0-line": "var(--bg-color-0-line)",
         "0-inset-line": "var(--bg-color-0-inset-line)",

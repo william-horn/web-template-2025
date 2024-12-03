@@ -1,7 +1,11 @@
 "use client"
 
 import { createContext, useContext } from "react";
-import { ContextNames } from "@/enums/ContextNames";
+
+export const ContextNames = {
+  ButtonGroup: "Enum__ButtonGroup",
+  DropdownSelection: "Enum__DropdownSelection"
+}
 
 const contexts = {};
 const Providers = {};
