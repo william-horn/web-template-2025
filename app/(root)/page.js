@@ -16,6 +16,17 @@ import Providers, { ContextNames } from "@/components/Providers";
 
 // import { v4 as uuidv4 } from 'uuid';
 
+/*
+  Coming back:
+
+    - Create a class hierarchy between contextControllers. There should be an absolute
+      base class, probably an "Element" base class (for inheriting similar methods
+      and eventData, etc), and then the specific classes like ButtonGroupController.
+
+    - Test buttons and icons more with state updating/class compiling
+
+*/
+
 
 export default function Home() {
   return (
