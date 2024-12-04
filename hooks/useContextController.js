@@ -9,13 +9,13 @@ import { ContextNames } from "@/components/Providers"
 import ButtonGroupController from "@/lib/contextControllers/ButtonGroupController"
 import DropdownSelectionController from "@/lib/contextControllers/DropdownSelectionController"
 import ButtonController from "@/lib/contextControllers/ButtonController"
-import IconController from "@/lib/contextControllers/IconController"
+import BaseElement from "@/lib/contextControllers/BaseElement"
 
 const contextControllers = {
   [ContextNames.ButtonGroup]: ButtonGroupController,
   [ContextNames.DropdownSelection]: DropdownSelectionController,
   [ContextNames.Button]: ButtonController,
-  [ContextNames.Icon]: IconController,
+  [ContextNames.BaseElement]: BaseElement,
 }
 
 // idea for "grouping" similar states in a "State" object

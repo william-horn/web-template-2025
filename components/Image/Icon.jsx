@@ -9,7 +9,7 @@ const Icon = ({
   alt, 
   utility=false,
   fillWhenEmpty=false,
-  contextGroups=[ContextNames.Icon],
+  contextGroups=[ContextNames.BaseElement],
   className: importedClassName,
   state: importedState
   // preset,
@@ -29,7 +29,7 @@ const Icon = ({
     importedClassName,
     importedState, 
     contextGroups,
-  }, ContextNames.Icon);
+  }, ContextNames.BaseElement);
 
   // update className based on imported state
   const finalClass = controller.useClassName(controller.getStateValues())
