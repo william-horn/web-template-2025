@@ -9,11 +9,13 @@ import { ContextNames } from "@/components/Providers"
 import ButtonGroupController from "@/lib/contextControllers/ButtonGroupController"
 import DropdownSelectionController from "@/lib/contextControllers/DropdownSelectionController"
 import ButtonController from "@/lib/contextControllers/ButtonController"
+import IconController from "@/lib/contextControllers/IconController"
 
 const contextControllers = {
   [ContextNames.ButtonGroup]: ButtonGroupController,
   [ContextNames.DropdownSelection]: DropdownSelectionController,
   [ContextNames.Button]: ButtonController,
+  [ContextNames.Icon]: IconController,
 }
 
 // idea for "grouping" similar states in a "State" object
@@ -110,7 +112,7 @@ class ContextController {
       // console.log("Compiling classes because dependencies changed: ", dependents);
   
       return this.compileClasses()
-    }, [...dependents])
+    }, dependents)
   
     return finalClass
   }

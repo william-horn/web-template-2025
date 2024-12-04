@@ -41,10 +41,11 @@ const className = {
   ]
 }
 
-const renderIcon = (icon, iconClass) => {
+const renderIcon = (icon, iconClass, state) => {
   if (icon) {
     return (
       <Icon 
+      state={state}
       className={iconClass}
       utility 
       src={icon}
@@ -53,7 +54,7 @@ const renderIcon = (icon, iconClass) => {
   }
 }
 
-const renderButtonContent = (context, finalClass, children) => {
+const renderButtonContent = (controller, finalClass, children) => {
   const {
     leftIcon,
     rightIcon,
@@ -61,10 +62,10 @@ const renderButtonContent = (context, finalClass, children) => {
     leftIconSelected,
     rightIconHovered,
     leftIconHovered,
-  } = context.updatedProps;
+  } = controller.updatedProps;
 
-  const selected = context.getState(ButtonStates.Selected)
-  const hovered = context.getState(ElementStates.Hovered)
+  const selected = controller.getState(ButtonStates.Selected)
+  const hovered = controller.getState(ElementStates.Hovered)
 
   const activeLeftIcon = (selected && leftIconSelected) 
     || (hovered && leftIconHovered)
@@ -76,13 +77,13 @@ const renderButtonContent = (context, finalClass, children) => {
 
   return (
     <>
-      {renderIcon(finalClass.leftIcon.src || activeLeftIcon, finalClass.leftIcon)}
+      {renderIcon(finalClass.leftIcon.src || activeLeftIcon, finalClass.leftIcon, controller.getState())}
 
       <span className={finalClass.inner.self}>
         {children}
       </span>
 
-      {renderIcon(finalClass.rightIcon.src || activeRightIcon, finalClass.rightIcon)}
+      {renderIcon(finalClass.rightIcon.src || activeRightIcon, finalClass.rightIcon, controller.getState())}
     </>
   );
 }
@@ -112,7 +113,8 @@ export const StatelessButton = ({
     ...rest
   }, ContextNames.Button)
 
-  const finalClass = controller.useClassName([controller.getStateValues()])
+  const finalClass = controller.useClassName(controller.getStateValues())
+  // const finalClass = controller.compileClasses()
 
   return (
     <button 

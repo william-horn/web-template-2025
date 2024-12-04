@@ -6,6 +6,7 @@ export const ContextNames = {
   ButtonGroup: "Enum__ButtonGroup",
   DropdownSelection: "Enum__DropdownSelection",
   Button: "Enum__Button",
+  Icon: "Enum__Icon",
 }
 
 const contexts = {};

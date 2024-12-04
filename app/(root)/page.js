@@ -13,6 +13,7 @@ import { StatelessButton } from "@/components/Button/Buttons";
 import { ButtonStates } from "@/lib/contextControllers/ButtonController";
 import { ButtonGroupStates } from "@/lib/contextControllers/ButtonGroupController";
 import Providers, { ContextNames } from "@/components/Providers";
+import { DropdownSelectionStates } from "@/lib/contextControllers/DropdownSelectionController";
 
 // import { v4 as uuidv4 } from 'uuid';
 
@@ -25,6 +26,10 @@ import Providers, { ContextNames } from "@/components/Providers";
 
     - Test buttons and icons more with state updating/class compiling
 
+    - Update all components to use 'useContextController()' hook at the beginning of the component
+
+    - Probably change $state field to use 'priority' values instead of positions in arrays.
+
 */
 
 
@@ -36,28 +41,20 @@ export default function Home() {
           <StatelessButton
           onClick={(e) => {console.log("clicked: ", e)}}
           id={1}
-          state={{[ButtonStates.Selected]: true}}
-          leftIcon="./icons/arrow_down_icon.svg"
-          leftIconSelected="./icons/arrow_up_icon.svg"
-          contextGroups={[
-            ContextNames.ButtonGroup, 
-            ContextNames.DropdownSelection,
-            ContextNames.Button
-          ]}
+          // state={{[ButtonStates.Selected]: true}}
           className={{
+            leftIcon: { src: "./icons/arrow_up_icon.svg" },
             $state: [
-              [ButtonGroupStates.Selected],
-              [ButtonStates.Selected, { self: "bg-blue-500 hover:bg-black" }],
+              [ButtonStates.Selected],
+              [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
             ]
           }}
           >Number 1</StatelessButton>
         </ButtonGroup>
       </Providers.DropdownSelection>
 
-        <StatelessButton
-        // onClick={() => {console.log('lol')}}
+        {/* <StatelessButton
         id={3}
-        // state={{[ButtonStates.Selected]: true}}
         leftIcon="./icons/arrow_down_icon.svg"
         leftIconSelected="./icons/arrow_up_icon.svg"
         className={{
@@ -81,7 +78,7 @@ export default function Home() {
             [ButtonStates.Selected, { self: "bg-blue-500 hover:bg-black" }],
           ]
         }}
-        >Number 1</StatelessButton>
+        >Number 1</StatelessButton> */}
 
     </Page>
   );

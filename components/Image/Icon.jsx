@@ -1,12 +1,15 @@
 import Image from "next/image"
 import { compileClass, mergeClasses } from "@/lib/util/mergeClassesV2";
 import { useMemo } from "react";
+import { useContextController } from "@/hooks/useContextController";
+import { ContextNames } from "../Providers";
 
 const Icon = ({
   src, 
   alt, 
   utility=false,
   fillWhenEmpty=false,
+  contextGroups=[ContextNames.Icon],
   className: importedClassName,
   state: importedState
   // preset,
@@ -21,12 +24,15 @@ const Icon = ({
     }
   };
 
-  const finalClass = useMemo(() => {
-    return compileClass({
-      className: mergeClasses(className, importedClassName),
-      state: importedState
-    })
-  }, [])
+  const controller = useContextController({
+    className,
+    importedClassName,
+    importedState, 
+    contextGroups,
+  }, ContextNames.Icon);
+
+  // update className based on imported state
+  const finalClass = controller.useClassName(controller.getStateValues())
 
   src = typeof finalClass.src !== "undefined" ? finalClass.src : src;
 
