@@ -52,7 +52,10 @@ class ContextController {
     this.ignoreContext = originalProps.ignoreContext
     this.contextGroups = originalProps.contextGroups || []
 
-    if (this.contextGroups.length == 0) throw Error("useContextController() must have at least one ContextController in 'contextGroups'")
+    // innateContext is always first 
+    if (!this.contextGroups.includes(innateContext)) {
+      this.contextGroups.unshift(innateContext)
+    }
 
     /*
       mapped by the ContextName enum:

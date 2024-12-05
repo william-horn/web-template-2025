@@ -55,35 +55,15 @@ const renderIcon = (icon, iconClass, state) => {
 }
 
 const renderButtonContent = (controller, finalClass, children) => {
-  const {
-    leftIcon,
-    rightIcon,
-    rightIconSelected,
-    leftIconSelected,
-    rightIconHovered,
-    leftIconHovered,
-  } = controller.updatedProps;
-
-  const selected = controller.getState(ButtonStates.Selected)
-  const hovered = controller.getState(ElementStates.Hovered)
-
-  const activeLeftIcon = (selected && leftIconSelected) 
-    || (hovered && leftIconHovered)
-    || leftIcon;
-
-  const activeRightIcon = (selected && rightIconSelected) 
-    || (hovered && rightIconHovered) 
-    || rightIcon;
-
   return (
     <>
-      {renderIcon(finalClass.leftIcon.src || activeLeftIcon, finalClass.leftIcon, controller.getState())}
+      {renderIcon(finalClass.leftIcon.src, finalClass.leftIcon, controller.getState())}
 
       <span className={finalClass.inner.self}>
         {children}
       </span>
 
-      {renderIcon(finalClass.rightIcon.src || activeRightIcon, finalClass.rightIcon, controller.getState())}
+      {renderIcon(finalClass.rightIcon.src, finalClass.rightIcon, controller.getState())}
     </>
   );
 }
@@ -96,7 +76,6 @@ export const StatelessButton = ({
   state: importedState={},
 
   contextGroups=[ 
-    ContextNames.Button,
     ContextNames.ButtonGroup, 
     ContextNames.DropdownSelection
   ],
@@ -114,7 +93,6 @@ export const StatelessButton = ({
   }, ContextNames.Button)
 
   const finalClass = controller.useClassName(controller.getStateValues())
-  // const finalClass = controller.compileClasses()
 
   return (
     <button 

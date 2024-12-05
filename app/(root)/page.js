@@ -36,35 +36,37 @@ import { DropdownSelectionStates } from "@/lib/contextControllers/DropdownSelect
 export default function Home() {
   return (
     <Page>
-      <Providers.DropdownSelection value={{con: "dropdown"}}>
-        <ButtonGroup>
-          <StatelessButton
-          onClick={(e) => {console.log("clicked: ", e)}}
-          id={1}
-          // state={{[ButtonStates.Selected]: true}}
-          className={{
-            leftIcon: { src: "./icons/arrow_up_icon.svg" },
-            $state: [
-              [ButtonStates.Selected],
-              [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
-            ]
-          }}
-          >Number 1</StatelessButton>
+      <Content>
+        <Text>Hello, world!</Text>
+      </Content>
+      <ButtonGroup
+      unselectLastChoice
+      selectionLimit={1}
+      >
+        <StatelessButton
+        onClick={(e) => {console.log("clicked: ", e)}}
+        id={1}
+        // state={{[ButtonStates.Selected]: true}}
+        className={{
+          leftIcon: { src: "./icons/arrow_up_icon.svg" },
+          $state: [
+            [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+          ]
+        }}
+        >Number 1</StatelessButton>
 
-          <StatelessButton
-          onClick={(e) => {console.log("clicked: ", e)}}
-          id={2}
-          state={{[ButtonStates.Selected]: true}}
-          className={{
-            leftIcon: { src: "./icons/arrow_up_icon.svg" },
-            $state: [
-              [ButtonStates.Selected],
-              [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
-            ]
-          }}
-          >Number 1</StatelessButton>
-        </ButtonGroup>
-      </Providers.DropdownSelection>
+        <StatelessButton
+        onClick={(e) => {console.log("clicked: ", e)}}
+        id={2}
+        state={{[ButtonStates.Selected]: true}}
+        className={{
+          leftIcon: { src: "./icons/arrow_up_icon.svg" },
+          $state: [
+            [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+          ]
+        }}
+        >Number 1</StatelessButton>
+      </ButtonGroup>
 
         {/* <StatelessButton
         id={3}
