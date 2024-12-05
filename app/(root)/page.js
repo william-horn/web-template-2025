@@ -50,6 +50,19 @@ export default function Home() {
             ]
           }}
           >Number 1</StatelessButton>
+
+          <StatelessButton
+          onClick={(e) => {console.log("clicked: ", e)}}
+          id={2}
+          state={{[ButtonStates.Selected]: true}}
+          className={{
+            leftIcon: { src: "./icons/arrow_up_icon.svg" },
+            $state: [
+              [ButtonStates.Selected],
+              [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+            ]
+          }}
+          >Number 1</StatelessButton>
         </ButtonGroup>
       </Providers.DropdownSelection>
 
