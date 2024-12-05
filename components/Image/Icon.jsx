@@ -9,11 +9,11 @@ const Icon = ({
   alt, 
   utility=false,
   fillWhenEmpty=false,
-  contextGroups=[ContextNames.BaseElement],
+  // contextGroups=[],
   className: importedClassName,
-  state: importedState
+  state: importedState,
   // preset,
-  // ...rest
+  ...rest
 }) => {
   const className = {
     self: "relative overflow-hidden inline-block align-middle min-w-[1.25rem] min-h-[1.25rem] w-5 h-5 select-none",
@@ -28,11 +28,12 @@ const Icon = ({
     className,
     importedClassName,
     importedState, 
-    contextGroups,
+    ...rest,
   }, ContextNames.BaseElement);
 
   // update className based on imported state
   const finalClass = controller.useClassName(controller.getStateValues())
+  console.log("in icon: ", controller.getState())
 
   src = typeof finalClass.src !== "undefined" ? finalClass.src : src;
 

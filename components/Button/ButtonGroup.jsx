@@ -1,9 +1,9 @@
 "use client";
 
-import { mergeClasses, compileClass } from "@/lib/util/mergeClassesV2";
 import { useState, useRef, useEffect, useMemo } from "react";
-import Providers from "../Providers";
+import Providers, { ContextNames } from "../Providers";
 import emptyFunc from "@/lib/util/defaultFunctions";
+import { useContextController } from "@/hooks/useContextController";
 
 // Button group styles
 const className = {
@@ -33,26 +33,19 @@ const ButtonGroup = function({
 
   ...rest
 }) {
-  const mergedClass = useMemo(() => {
-    console.log("calculating merge classes");
-    return mergeClasses(
-      className,
-      importedClassName,
-    );
-  }, []);
-
-  const finalClass = useMemo(() => {
-    console.log("calculating compile classes");
-    return compileClass({
-      className: mergedClass,
-      state: importedState
-    })
-  }, [importedState.groupSelected]);
-
   // Button group state (active buttons)
   const [activeIds, setActiveIds] = useState(defaultSelect);
   const registeredIds = useRef({});
   const activeData = useRef({});
+
+  const controller = useContextController({
+    className,
+    importedClassName,
+    importedState,
+    ...rest,
+  }, ContextNames.BaseElement)
+
+  const finalClass = controller.useClassName(controller.getStateValues())
 
   // catch default selected buttons being greater than the selection limit
   if (selectionLimit > -1 && defaultSelect.length > selectionLimit) {
@@ -83,12 +76,6 @@ const ButtonGroup = function({
     }
   }
 
-  // useEffect(() => {
-  //   console.log("active: ", activeIds);
-  //   console.log("data: ", activeData.current);
-  //   console.log("registered: ", registeredIds.current);
-  // });
-
   useEffect(() => {
     const invalidId = defaultSelect.find(id => !registeredIds.current[id]);
 
@@ -112,7 +99,7 @@ const ButtonGroup = function({
       unselectionLimit,
       registeredIds,
       activeData,
-      importedState,
+      importedState: controller.getState(),
       rest
     }}
     >

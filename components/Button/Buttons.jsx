@@ -41,11 +41,11 @@ const className = {
   ]
 }
 
-const renderIcon = (icon, iconClass, state) => {
+const renderIcon = (icon, iconClass) => {
   if (icon) {
     return (
       <Icon 
-      state={state}
+      contextGroups={[ContextNames.ButtonGroup]}
       className={iconClass}
       utility 
       src={icon}
@@ -54,16 +54,16 @@ const renderIcon = (icon, iconClass, state) => {
   }
 }
 
-const renderButtonContent = (controller, finalClass, children) => {
+const renderButtonContent = (finalClass, children) => {
   return (
     <>
-      {renderIcon(finalClass.leftIcon.src, finalClass.leftIcon, controller.getState())}
+      {renderIcon(finalClass.leftIcon.src, finalClass.leftIcon)}
 
       <span className={finalClass.inner.self}>
         {children}
       </span>
 
-      {renderIcon(finalClass.rightIcon.src, finalClass.rightIcon, controller.getState())}
+      {renderIcon(finalClass.rightIcon.src, finalClass.rightIcon)}
     </>
   );
 }
@@ -93,6 +93,7 @@ export const StatelessButton = ({
   }, ContextNames.Button)
 
   const finalClass = controller.useClassName(controller.getStateValues())
+  console.log("in button: ", controller.getState())
 
   return (
     <button 
@@ -100,7 +101,7 @@ export const StatelessButton = ({
     onClick={() => controller.dispatchMethod("onClick")}
     {...controller.getRestProps()}
     >
-      {renderButtonContent(controller, finalClass, children)}
+      {renderButtonContent(finalClass, children)}
     </button>
   );
 };

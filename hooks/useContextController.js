@@ -122,7 +122,7 @@ class ContextController {
 
   validateProps() {
     if (this.hasContext && this.originalProps.id == null) {
-      console.warn("No 'id' prop was given to sub-component - assigning 'default' by default.")
+      // console.warn("No 'id' prop was given to sub-component - assigning 'default' by default.")
       this.updatedProps.id = "default"
     }
   }
