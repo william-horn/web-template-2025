@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { usePathname } from "next/navigation";
 
 import Link from "next/link";
@@ -42,7 +42,10 @@ const renderIcon = (icon, iconClass) => {
   if (icon) {
     return (
       <Icon 
-      contextGroups={[ContextNames.Button]}
+      id="button_icon"
+      contextGroups={[
+        [ContextNames.Button]
+      ]}
       className={iconClass}
       utility 
       src={icon}
@@ -73,8 +76,8 @@ export const StatelessButton = ({
   state: importedState={},
 
   contextGroups=[ 
-    ContextNames.ButtonGroup, 
-    ContextNames.DropdownSelection
+    [ContextNames.ButtonGroup, true], 
+    [ContextNames.DropdownSelection, true]
   ],
 
   // Native react element props
@@ -94,7 +97,7 @@ export const StatelessButton = ({
   return (
     <button 
     className={finalClass.self}
-    onClick={() => controller.dispatchMethod("onClick")}
+    onClick={() => controller.dispatchMethod({ method: "onClick" })}
     {...controller.getRestProps()}
     >
       <Providers.Button
@@ -116,7 +119,7 @@ export const StatefulButton = ({
   const [selected, setSelected] = useState(defaultSelected)
   const [hovered, setHovered] = useState(false)
 
-  const onClick = (eventData) => {
+  const onClick = useCallback((eventData) => {
     const isSelected = !selected
 
     // update the React button state
@@ -128,8 +131,10 @@ export const StatefulButton = ({
       so we can return the accurate state in the eventData
     */
     eventData.controller.updateState({ [ButtonStates.Selected]: isSelected })
-    if (importedOnClick) importedOnClick(eventData)
-  }
+    if (importedOnClick) return importedOnClick(eventData)
+
+    return true
+  }, [])
   
   return (
     <StatelessButton

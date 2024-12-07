@@ -40,12 +40,16 @@ export default function Home() {
   return (
     <Page>
       <Content>
-        <Text>Hello, world!</Text>
+        {/* <Text>Hello, world!</Text> */}
       </Content>
       <ButtonGroup
       unselectLastChoice
+      state={{
+        [ButtonGroupStates.Selected]: true
+      }}
       selectionLimit={1}
-      onClick={e => console.log(e)}
+      onClick={e => console.log("main event: ", e)}
+      // defaultSelect={["label"]}
       >
         {/* <StatelessButton
         onClick={(e) => {console.log("clicked: ", e)}}
@@ -60,20 +64,23 @@ export default function Home() {
         >Number 1</StatelessButton> */}
 
         {
-          new Array(10).fill(1).map((_, i) => 
-            <StatefulButton
+          new Array(3).fill(1).map((_, i) => 
+            <StatelessButton
+            // ignoreContext
             onClick={(e) => {
               switch (e.contextEnum) {
                 case ContextNames.Button:
-                  console.log('button was clicked')
+                  console.log('button was clicked', e)
                   break
                 
                 case ContextNames.ButtonGroup:
-                  console.log('button group was clicked')
+                  console.log('button group was clicked', e)
                   break
 
-                default: console.log('no context')
+                default: console.log('no context', e)
               }
+
+             return true
             }}
             id={i}
             key={i}
@@ -83,16 +90,82 @@ export default function Home() {
               leftIcon: { src: "./icons/arrow_up_icon.svg" },
               $state: [
                 [ButtonGroupStates.Selected],
-                [ButtonStates.Selected, { self: "bg-red-500 ", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
-                // [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+                // [ButtonStates.Selected, { self: "bg-red-500 ", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+                [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
               ]
             }}
-            >Number 1</StatefulButton>
+            >Number 1</StatelessButton>
+          )
+        }
+
+        <Text 
+        id="label"
+        onClick={(e) => console.log("text: ", e)}
+        contextGroups={[[ContextNames.ButtonGroup]]}
+        className={{
+          $state: [
+            [ButtonGroupStates.Selected, { self: "text-red-500" }]
+          ]
+        }}
+        >
+          Hey there guys!
+        </Text>
+
+        {
+          new Array(3).fill(1).map((_, i) => 
+            <StatelessButton
+            // ignoreContext
+            id={i + 3}
+            key={i}
+            
+            // state={{[ButtonStates.Selected]: true}}
+            className={{
+              leftIcon: { src: "./icons/arrow_up_icon.svg" },
+              $state: [
+                [ButtonGroupStates.Selected],
+                // [ButtonStates.Selected, { self: "bg-red-500 ", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+                [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+              ]
+            }}
+            >Number 1</StatelessButton>
           )
         }
 
 
       </ButtonGroup>
+
+      <Content width="xl" className="mx-auto"> 
+        <Text>Howdy</Text>
+      </Content>
+
+      <VerticalContent>
+        <VerticalContent.Section>
+          <Text>Hello, world!</Text>
+        </VerticalContent.Section>
+        <VerticalContent.Remaining className={{ inner: { self: "p-5" }}}>
+          <ButtonGroup>
+          {
+            new Array(30).fill(1).map((_, i) => 
+              <StatelessButton
+              // ignoreContext
+              id={i + 3}
+              key={i}
+              
+              // state={{[ButtonStates.Selected]: true}}
+              className={{
+                leftIcon: { src: "./icons/arrow_up_icon.svg" },
+                $state: [
+                  [ButtonGroupStates.Selected],
+                  // [ButtonStates.Selected, { self: "bg-red-500 ", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+                  [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+                ]
+              }}
+              >Number 1</StatelessButton>
+            )
+          }
+          </ButtonGroup>
+        </VerticalContent.Remaining>
+      </VerticalContent>
 
         {/* <StatelessButton
         id={3}

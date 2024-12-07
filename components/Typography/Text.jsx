@@ -7,6 +7,7 @@ import { getTextSize } from "@/lib/util/responsive";
 import { mergeClasses, compileClass } from "@/lib/util/mergeClassesV2";
 import { useContextController } from "@/hooks/useContextController";
 import { ContextNames } from "../Providers";
+import { ButtonGroupStates } from "@/lib/contextControllers/ButtonGroupController";
 
 const Text = React.forwardRef(function({ 
   children, 
@@ -23,7 +24,7 @@ const Text = React.forwardRef(function({
     importedState,
     contextGroups,
     ...rest,
-  }, ContextNames.BaseElement)
+  }, ContextNames.Text)
 
   const finalClass = controller.useClassName(controller.getStateValues())
 

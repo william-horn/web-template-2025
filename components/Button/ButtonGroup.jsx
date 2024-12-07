@@ -10,9 +10,7 @@ import ElementStates from "@/enums/ElementStates";
 const className = {
   self: "flex flex-col gap-2 custom-button-group",
 
-  $state: [
-    [ElementStates.Selected, { self: "bg-red-500",  }]
-  ]
+  $state: []
 }
 
 const ButtonGroup = function({ 
@@ -44,7 +42,7 @@ const ButtonGroup = function({
     importedClassName,
     importedState,
     ...rest,
-  }, ContextNames.BaseElement)
+  })
 
   const finalClass = controller.useClassName(controller.getStateValues())
 

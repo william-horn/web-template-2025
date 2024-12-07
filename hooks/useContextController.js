@@ -9,21 +9,23 @@ import { ContextNames } from "@/components/Providers"
 import ButtonGroupController from "@/lib/contextControllers/ButtonGroupController"
 import DropdownSelectionController from "@/lib/contextControllers/DropdownSelectionController"
 import ButtonController from "@/lib/contextControllers/ButtonController"
-import BaseElement from "@/lib/contextControllers/BaseElement"
+import ElementController from "@/lib/contextControllers/ElementController"
+import TextController from "@/lib/contextControllers/TextController"
+import IconController from "@/lib/contextControllers/IconController"
 
 const contextControllers = {
   [ContextNames.ButtonGroup]: ButtonGroupController,
   [ContextNames.DropdownSelection]: DropdownSelectionController,
   [ContextNames.Button]: ButtonController,
-  [ContextNames.BaseElement]: BaseElement,
+  [ContextNames.Element]: ElementController,
+  [ContextNames.Text]: TextController,
+  [ContextNames.Icon]: IconController,
 }
 
-// idea for "grouping" similar states in a "State" object
-
-// const State = function() {
-//   this.value = false
-//   this.group = {}
-// }
+const ContextStatus = {
+  Innate: "Enum__InnateContext",
+  Provider: "Enum__ProviderContext",
+}
 
 /*
   ==============================
@@ -33,9 +35,7 @@ const contextControllers = {
   Default context data for new context controller
 */
 class ContextController {
-  constructor(props, innateContext) {
-    if (!innateContext) throw Error("useContextController() must be given an innateContext argument")
-
+  constructor(props, innateContext=ContextNames.Element) {
     // props directly passed to the button 
     const updatedProps = {...props}
     const originalProps = Object.freeze(props)
@@ -49,11 +49,13 @@ class ContextController {
     // other exported context info
     this.hasContext = false
     this.eventData = originalProps.eventData || {}
-    this.ignoreContext = originalProps.ignoreContext
+    // this.ignoreContext = originalProps.ignoreContext
+    innateContext = [innateContext, true]
     this.contextGroups = originalProps.contextGroups || []
+    this.cachedClassName = null; // useClassName() hook will define this
 
-    // innateContext is always first 
-    if (!this.contextGroups.includes(innateContext)) {
+    // innateContext is always first unless specified otherwise
+    if (!this.contextGroups.some(contextGroup => contextGroup[0] == innateContext[0])) {
       this.contextGroups.unshift(innateContext)
     }
 
@@ -69,48 +71,66 @@ class ContextController {
     this.contextControllers = {}
 
     // find the contexts
-    {
-      let providerStates = {}
+    this.forEachContextGroup(contextEnum => {
+      // otherwise, check for other provider contexts
+      const context = useComponentContext(contextEnum)
 
-      this.forEachContextGroup(contextEnum => {
-        let context
+      // if no context exists, return out
+      if (!context) return;
 
-        // todo: clean this up later
-        if (contextEnum == innateContext) {
-          context = {
-            status: "InnateContext",
-            importedState: {},
-          }
-        } if (contextEnum != innateContext) {
-          context = useComponentContext(contextEnum)
-  
-          if (context && !this.ignoreContext) {
-            this.hasContext = true
-          } else {
-            return
-          }
-        }
+      // add the provider context to the table
+      providerContexts[contextEnum] = context
+      context.status = ContextStatus.Provider
+    })
 
-        // add the provider context to the table
-        providerContexts[contextEnum] = context
-
-        // inherit the provider context states
-        const providerState = context.importedState
-
-        for (let stateEnum in providerState) {
-          providerStates[stateEnum] = providerState[stateEnum]
-        }
-
-        // create new instance of the specific context interface, for ex ButtonGroupContext
-        // which holds all code dealing with ButtonGroup interactions
+    // create the controllers
+    this.forEachContextGroup((contextEnum, withController) => {
+      // check for innate context first
+      if (contextEnum == innateContext[0]) {
         this.contextControllers[contextEnum] = new contextControllers[contextEnum](this, contextEnum)
-      })
 
-      this.updateState(providerStates, false)
-    }
+        // this may need to be given defaults such as 'importedState'
+        // providerContexts[contextEnum] = { status: ContextStatus.Innate }
+        return 
+      }
+
+      // if 'withController' then don't create controllers for context
+      if (!withController) return;
+
+      // if no provider context exists, then there is no reason to create a controller
+      if (!this.containsContext(contextEnum)) return;
+
+      this.hasContext = true
+
+      // create new instance of the specific context interface, for ex ButtonGroupContext
+      // which holds all code dealing with ButtonGroup interactions
+      this.contextControllers[contextEnum] = new contextControllers[contextEnum](this, contextEnum)
+    })
+
+    // inherit provider states
+    this.inheritProviderStates()
 
     // init
     this.validateProps()
+  }
+
+  // inherit states from ALL contextGroup enums that were provided.
+  inheritProviderStates() {
+    const providerStates = {}
+
+    this.forEachContextGroup((contextEnum) => {
+      const providerContext = this.providerContexts[contextEnum]
+      
+      if (!providerContext) return;
+
+      const providerState = providerContext.importedState
+
+      for (let stateEnum in providerState) {
+        providerStates[stateEnum] = providerState[stateEnum]
+      }
+    })
+
+    this.updateState(providerStates, false)
   }
 
   mergeClasses() {
@@ -133,13 +153,23 @@ class ContextController {
   
       return this.compileClasses()
     }, dependents)
+
+    this.cachedClassName = finalClass;
   
     return finalClass
   }
 
+  getCachedClassName() {
+    return this.cachedClassName
+  }
+
+  containsContext(contextEnum) {
+    return this.providerContexts.hasOwnProperty(contextEnum)
+  }
+
   validateProps() {
     if (this.hasContext && this.originalProps.id == null) {
-      // console.warn("No 'id' prop was given to sub-component - assigning 'default' by default.")
+      console.warn("No 'id' prop was given to sub-component - assigning 'default' by default.")
       this.updatedProps.id = "default"
     }
   }
@@ -169,7 +199,7 @@ class ContextController {
 
   forEachContextGroup(callback) {
     for (let contextEnum of this.contextGroups) {
-      const result = callback(contextEnum)
+      const result = callback(contextEnum[0], contextEnum[1])
 
       if (result) break;
     }
@@ -185,7 +215,7 @@ class ContextController {
   }
 
   forEachController(callback) {
-    this.forEachContextGroup(contextEnum => {
+    this.forEachContextGroup((contextEnum) => {
       if (this.contextControllers[contextEnum]) {
         const result = callback(this.contextControllers[contextEnum], contextEnum)
         return result
@@ -203,12 +233,28 @@ class ContextController {
     return this.contextControllers
   }
 
-  dispatchMethod(handlerName, ...args) {
-    this.forEachController(controller => {
-      if (typeof controller[handlerName] == "function") {
-        controller[handlerName](...args)
+  dispatchMethod(options) {
+    const {
+      context: contextEnum,
+      method,
+      args=[]
+    } = options
+
+    const dispatch = (contextEnum) => {
+      const controller = this.contextControllers[contextEnum]
+      if (controller && typeof controller[method] == "function") {
+        controller[method](...args)
+      } else {
+        throw Error("dispatchMethod() failed")
       }
-    })
+    }
+
+    if (contextEnum) {
+      dispatch(contextEnum)
+      return
+    }
+
+    this.forEachController((_, contextEnum) => dispatch(contextEnum))
   }
 
   getRestProps() {

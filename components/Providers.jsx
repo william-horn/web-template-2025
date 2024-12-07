@@ -7,7 +7,8 @@ export const ContextNames = {
   DropdownSelection: "Enum__DropdownSelection",
   Button: "Enum__Button",
   Icon: "Enum__Icon",
-  BaseElement: "Enum__BaseElement",
+  Element: "Enum__Element",
+  Text: "Enum__Text",
 }
 
 const contexts = {};

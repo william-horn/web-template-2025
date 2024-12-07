@@ -28,25 +28,18 @@ const Icon = ({
     className,
     importedClassName,
     importedState, 
+    src,
+    fillWhenEmpty,
     ...rest,
-  }, ContextNames.BaseElement);
+  }, ContextNames.Icon);
 
   // update className based on imported state
   const finalClass = controller.useClassName(controller.getStateValues())
-  // console.log("in icon: ", controller.getState())
+  controller.dispatchMethod({ context: ContextNames.Icon, method: "setDefaultProps" })
 
-  /*
-    TODO: potentially put this logic in it's own "IconController" class
-  */
-  src = typeof finalClass.src !== "undefined" ? finalClass.src : src;
-
-  if (src === "fill") {
-    fillWhenEmpty = true;
-    src = false;
-  }
-  /*
-  ----------------------------------------------------------------------
-  */
+  // update the props with the controller's updated props
+  src = controller.updatedProps.src
+  fillWhenEmpty = controller.updatedProps.fillWhenEmpty
 
   const renderIcon = (src) => (
     <span 
@@ -62,7 +55,7 @@ const Icon = ({
                 ? "(min-width: 1024px) 192px, (min-width: 640px) 96px, 48px"
                 : "(min-width: 1024px) 512px, (min-width: 640px) 256px, 128px"
             }
-            alt={alt || "icon"}
+            alt={controller.updatedProps.alt || "icon"}
             />
           : <></>
       }

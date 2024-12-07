@@ -4,6 +4,7 @@ import React from "react";
 
 // Util
 import { mergeClasses, compileClass } from "@/lib/util/mergeClassesV2";
+import { useContextController } from "@/hooks/useContextController";
 
 const Page = React.forwardRef(function({
   children,
@@ -11,15 +12,19 @@ const Page = React.forwardRef(function({
   state: importedState,
   ...rest
 }, ref) {
+  const controller = useContextController({
+    className: mergeClasses("min-h-screen page", importedClassName),
+    importedState,
+    contextGroups: [],
+    ...rest,
+  })
+  
+  const finalClass = controller.useClassName(controller.getStateValues())
+
   return (
     <main 
     ref={ref} 
-    className={
-      compileClass({
-        className: mergeClasses("min-h-screen page", importedClassName),
-        state: importedState
-      }).self
-    }
+    className={finalClass.self}
     {...rest}
     >
       {children}
