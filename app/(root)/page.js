@@ -45,6 +45,7 @@ export default function Home() {
       <ButtonGroup
       unselectLastChoice
       selectionLimit={1}
+      onClick={e => console.log(e)}
       >
         {/* <StatelessButton
         onClick={(e) => {console.log("clicked: ", e)}}
@@ -60,21 +61,36 @@ export default function Home() {
 
         {
           new Array(10).fill(1).map((_, i) => 
-            <StatelessButton
-            // onClick={(e) => {console.log("clicked: ", e)}}
+            <StatefulButton
+            onClick={(e) => {
+              switch (e.contextEnum) {
+                case ContextNames.Button:
+                  console.log('button was clicked')
+                  break
+                
+                case ContextNames.ButtonGroup:
+                  console.log('button group was clicked')
+                  break
+
+                default: console.log('no context')
+              }
+            }}
             id={i}
             key={i}
+            
             // state={{[ButtonStates.Selected]: true}}
             className={{
               leftIcon: { src: "./icons/arrow_up_icon.svg" },
               $state: [
-                [ButtonStates.Selected],
-                [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+                [ButtonGroupStates.Selected],
+                [ButtonStates.Selected, { self: "bg-red-500 ", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+                // [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
               ]
             }}
-            >Number 1</StatelessButton>
+            >Number 1</StatefulButton>
           )
         }
+
 
       </ButtonGroup>
 

@@ -69,39 +69,41 @@ class ContextController {
     this.contextControllers = {}
 
     // find the contexts
-    this.forEachContextGroup(contextEnum => {
-      let context
-
-      // todo: clean this up later
-      if (contextEnum == innateContext) {
-        context = { status: "InnateContext" }
-      } else {
-        context = useComponentContext(contextEnum)
-
-        if (context && !this.ignoreContext) {
-          this.hasContext = true
-        } else {
-          return
-        }
-      }
-
-      providerContexts[contextEnum] = context
-
-      // create new instance of the specific context interface, for ex ButtonGroupContext
-      // which holds all code dealing with ButtonGroup interactions
-      this.contextControllers[contextEnum] = new contextControllers[contextEnum](this, contextEnum)
-    })
-
-    // inherit provider states 
     {
       let providerStates = {}
 
-      this.forEachProvider((providerContext, contextEnum) => {
-        const providerState = providerContext.importedState
+      this.forEachContextGroup(contextEnum => {
+        let context
+
+        // todo: clean this up later
+        if (contextEnum == innateContext) {
+          context = {
+            status: "InnateContext",
+            importedState: {},
+          }
+        } if (contextEnum != innateContext) {
+          context = useComponentContext(contextEnum)
+  
+          if (context && !this.ignoreContext) {
+            this.hasContext = true
+          } else {
+            return
+          }
+        }
+
+        // add the provider context to the table
+        providerContexts[contextEnum] = context
+
+        // inherit the provider context states
+        const providerState = context.importedState
 
         for (let stateEnum in providerState) {
           providerStates[stateEnum] = providerState[stateEnum]
         }
+
+        // create new instance of the specific context interface, for ex ButtonGroupContext
+        // which holds all code dealing with ButtonGroup interactions
+        this.contextControllers[contextEnum] = new contextControllers[contextEnum](this, contextEnum)
       })
 
       this.updateState(providerStates, false)

@@ -14,7 +14,7 @@ import { ButtonStates } from "@/lib/contextControllers/ButtonController";
 
 const className = {
   // the outer-most element of the button, or "master element"
-  self: "bg-0-inset text-0 inline-flex items-center align-middle rounded justify-center  w-fit text-sm px-1 hover:bg-button-0-hover",
+  self: "bg-0-inset text-0 inline-flex items-center align-middle rounded justify-center  w-fit text-sm px-1 hover:bg-button-0-hover", 
 
   // the inner-container sitting between the outer-layer and button content
   inner: {
@@ -35,10 +35,7 @@ const className = {
     }
   },
 
-  $state: [
-    [ButtonStates.Selected, { self: "bg-green-500 hover:bg-green-600" }],
-    [ButtonGroupStates.Selected, { self: "bg-black" }]
-  ]
+  $state: []
 }
 
 const renderIcon = (icon, iconClass) => {
@@ -136,8 +133,13 @@ export const StatefulButton = ({
   
   return (
     <StatelessButton
+    onMouseEnter={() => setHovered(true)}
+    onMouseLeave={() => setHovered(false)}
     onClick={onClick}
-    state={{[ButtonStates.Selected]: selected}} 
+    state={{
+      [ButtonStates.Selected]: selected,
+      [ButtonStates.Hovered]: hovered,
+    }} 
     {...rest}
     />
   )
