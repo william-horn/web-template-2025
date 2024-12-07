@@ -35,12 +35,18 @@ const Icon = ({
   const finalClass = controller.useClassName(controller.getStateValues())
   // console.log("in icon: ", controller.getState())
 
+  /*
+    TODO: potentially put this logic in it's own "IconController" class
+  */
   src = typeof finalClass.src !== "undefined" ? finalClass.src : src;
 
   if (src === "fill") {
     fillWhenEmpty = true;
     src = false;
   }
+  /*
+  ----------------------------------------------------------------------
+  */
 
   const renderIcon = (src) => (
     <span 

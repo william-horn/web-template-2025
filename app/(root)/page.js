@@ -23,10 +23,12 @@ import { DropdownSelectionStates } from "@/lib/contextControllers/DropdownSelect
     - Create a class hierarchy between contextControllers. There should be an absolute
       base class, probably an "Element" base class (for inheriting similar methods
       and eventData, etc), and then the specific classes like ButtonGroupController.
+        - DONE
 
     - Test buttons and icons more with state updating/class compiling
 
     - Update all components to use 'useContextController()' hook at the beginning of the component
+        - PROGRESS
 
     - Probably change $state field to use 'priority' values instead of positions in arrays.
 
@@ -41,6 +43,8 @@ export default function Home() {
         <Text>Hello, world!</Text>
       </Content>
       <ButtonGroup
+      unselectLastChoice
+      selectionLimit={1}
       >
         {/* <StatelessButton
         onClick={(e) => {console.log("clicked: ", e)}}
@@ -54,13 +58,13 @@ export default function Home() {
         }}
         >Number 1</StatelessButton> */}
 
-        {/* {
-          new Array(1000).fill(1).map((_, i) => 
+        {
+          new Array(10).fill(1).map((_, i) => 
             <StatelessButton
             // onClick={(e) => {console.log("clicked: ", e)}}
             id={i}
             key={i}
-            state={{[ButtonStates.Selected]: true}}
+            // state={{[ButtonStates.Selected]: true}}
             className={{
               leftIcon: { src: "./icons/arrow_up_icon.svg" },
               $state: [
@@ -70,7 +74,7 @@ export default function Home() {
             }}
             >Number 1</StatelessButton>
           )
-        } */}
+        }
 
       </ButtonGroup>
 
@@ -101,24 +105,24 @@ export default function Home() {
         }}
         >Number 1</StatelessButton> */}
 
-      {
+      {/* {
         new Array(10).fill(1).map((_, i) => 
           <StatefulButton
-          // onClick={(e) => {thing = !thing}}
+          onClick={(e) => console.log(e)}
           id={i}
           key={i}
+          // defaultSelected
           test={true}
           // state={{[ButtonStates.Selected]: true}}
           className={{
             leftIcon: { src: "./icons/arrow_up_icon.svg" },
             $state: [
-              [ButtonStates.Selected],
-              [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+              [ButtonStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
             ]
           }}
           >Number 1</StatefulButton>
         )
-      }
+      } */}
 
     </Page>
   );

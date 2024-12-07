@@ -111,15 +111,34 @@ export const StatelessButton = ({
   );
 };
 
-export const StatefulButton = (props) => {
-  const [selected, setSelected] = useState(false)
+export const StatefulButton = ({
+  defaultSelected=false,
+  onClick: importedOnClick,
+  ...rest
+}) => {
+  const [selected, setSelected] = useState(defaultSelected)
+  const [hovered, setHovered] = useState(false)
 
-  if (props.test) {
-    const [another, setAnother] = useState(true)
-    console.log(another)
+  const onClick = (eventData) => {
+    const isSelected = !selected
+
+    // update the React button state
+    setSelected(isSelected)
+
+    /*
+      Since 'setState()' works asynchronously, this code will run before
+      React updates the state. So we must update the state manually in the controller
+      so we can return the accurate state in the eventData
+    */
+    eventData.controller.updateState({ [ButtonStates.Selected]: isSelected })
+    if (importedOnClick) importedOnClick(eventData)
   }
-
+  
   return (
-    <StatelessButton onClick={() => setSelected(p => !p)} state={{[ButtonStates.Selected]: selected}} {...props}/>
+    <StatelessButton
+    onClick={onClick}
+    state={{[ButtonStates.Selected]: selected}} 
+    {...rest}
+    />
   )
 }
