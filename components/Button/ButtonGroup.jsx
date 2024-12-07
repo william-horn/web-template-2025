@@ -4,13 +4,14 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import Providers, { ContextNames } from "../Providers";
 import emptyFunc from "@/lib/util/defaultFunctions";
 import { useContextController } from "@/hooks/useContextController";
+import ElementStates from "@/enums/ElementStates";
 
 // Button group styles
 const className = {
   self: "flex flex-col gap-2 custom-button-group",
 
   $state: [
-    ["groupSelected", { self: "bg-red-500",  }]
+    [ElementStates.Selected, { self: "bg-red-500",  }]
   ]
 }
 
