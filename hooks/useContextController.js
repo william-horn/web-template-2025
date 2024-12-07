@@ -69,7 +69,7 @@ class ContextController {
     this.contextControllers = {}
 
     // find the contexts
-    for (let contextEnum of this.contextGroups) {
+    this.forEachContextGroup(contextEnum => {
       let context
 
       // todo: clean this up later
@@ -81,7 +81,7 @@ class ContextController {
         if (context && !this.ignoreContext) {
           this.hasContext = true
         } else {
-          continue
+          return
         }
       }
 
@@ -90,6 +90,21 @@ class ContextController {
       // create new instance of the specific context interface, for ex ButtonGroupContext
       // which holds all code dealing with ButtonGroup interactions
       this.contextControllers[contextEnum] = new contextControllers[contextEnum](this, contextEnum)
+    })
+
+    // inherit provider states 
+    {
+      let providerStates = {}
+
+      this.forEachProvider((providerContext, contextEnum) => {
+        const providerState = providerContext.importedState
+
+        for (let stateEnum in providerState) {
+          providerStates[stateEnum] = providerState[stateEnum]
+        }
+      })
+
+      this.updateState(providerStates, false)
     }
 
     // init
@@ -136,33 +151,44 @@ class ContextController {
   }
 
   getStateValues() {
-    return Object.values(this.state)
+    return Object.values(this.getState())
   }
 
   setState(newState) {
     this.state = newState
   }
 
-  updateState(updatedState) {
+  updateState(updatedState, override=true) {
     for (let key in updatedState) {
+      if (!override && this.state.hasOwnProperty(key)) continue;
       this.state[key] = updatedState[key];
     }
   }
 
-  forEachProvider(callback) {
+  forEachContextGroup(callback) {
     for (let contextEnum of this.contextGroups) {
-      if (this.providerContexts[contextEnum]) {
-        callback(this.providerContexts[contextEnum], contextEnum)
-      }
+      const result = callback(contextEnum)
+
+      if (result) break;
     }
   }
 
-  forEachController(callback) {
-    for (let contextEnum of this.contextGroups) {
-      if (this.contextControllers[contextEnum]) {
-        callback(this.contextControllers[contextEnum], contextEnum)
+  forEachProvider(callback) {
+    this.forEachContextGroup(contextEnum => {
+      if (this.providerContexts[contextEnum]) {
+        const result = callback(this.providerContexts[contextEnum], contextEnum)
+        return result
       }
-    }
+    })
+  }
+
+  forEachController(callback) {
+    this.forEachContextGroup(contextEnum => {
+      if (this.contextControllers[contextEnum]) {
+        const result = callback(this.contextControllers[contextEnum], contextEnum)
+        return result
+      }
+    })
   }
 
   getController(contextEnum) {
@@ -202,6 +228,7 @@ class ContextController {
       value,
       contextGroups,
       className,
+      test,
       ...rest
     } = this.originalProps;
   

@@ -7,7 +7,7 @@ import Text from "@/components/Typography/Text";
 import Content from "@/components/Container/Content";
 import VerticalContent from "@/components/Container/VerticalContent";
 import ButtonGroup from "@/components/Button/ButtonGroup";
-import { StatelessButton } from "@/components/Button/Buttons";
+import { StatefulButton, StatelessButton } from "@/components/Button/Buttons";
 
 // Other
 import { ButtonStates } from "@/lib/contextControllers/ButtonController";
@@ -34,6 +34,7 @@ import { DropdownSelectionStates } from "@/lib/contextControllers/DropdownSelect
 
 
 export default function Home() {
+
   return (
     <Page>
       <Content>
@@ -53,18 +54,24 @@ export default function Home() {
         }}
         >Number 1</StatelessButton> */}
 
-        <StatelessButton
-        // onClick={(e) => {console.log("clicked: ", e)}}
-        id={2}
-        // state={{[ButtonStates.Selected]: true}}
-        className={{
-          leftIcon: { src: "./icons/arrow_up_icon.svg" },
-          $state: [
-            [ButtonStates.Selected],
-            [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
-          ]
-        }}
-        >Number 1</StatelessButton>
+        {/* {
+          new Array(1000).fill(1).map((_, i) => 
+            <StatelessButton
+            // onClick={(e) => {console.log("clicked: ", e)}}
+            id={i}
+            key={i}
+            state={{[ButtonStates.Selected]: true}}
+            className={{
+              leftIcon: { src: "./icons/arrow_up_icon.svg" },
+              $state: [
+                [ButtonStates.Selected],
+                [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+              ]
+            }}
+            >Number 1</StatelessButton>
+          )
+        } */}
+
       </ButtonGroup>
 
         {/* <StatelessButton
@@ -93,6 +100,25 @@ export default function Home() {
           ]
         }}
         >Number 1</StatelessButton> */}
+
+      {
+        new Array(10).fill(1).map((_, i) => 
+          <StatefulButton
+          // onClick={(e) => {thing = !thing}}
+          id={i}
+          key={i}
+          test={true}
+          // state={{[ButtonStates.Selected]: true}}
+          className={{
+            leftIcon: { src: "./icons/arrow_up_icon.svg" },
+            $state: [
+              [ButtonStates.Selected],
+              [ButtonGroupStates.Selected, { self: "bg-red-500 hover:bg-red-600", leftIcon: { src: "./icons/arrow_down_icon.svg" }}],
+            ]
+          }}
+          >Number 1</StatefulButton>
+        )
+      }
 
     </Page>
   );

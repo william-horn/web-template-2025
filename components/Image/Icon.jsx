@@ -33,7 +33,7 @@ const Icon = ({
 
   // update className based on imported state
   const finalClass = controller.useClassName(controller.getStateValues())
-  console.log("in icon: ", controller.getState())
+  // console.log("in icon: ", controller.getState())
 
   src = typeof finalClass.src !== "undefined" ? finalClass.src : src;
 

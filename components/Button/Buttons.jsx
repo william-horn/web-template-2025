@@ -14,7 +14,7 @@ import { ButtonStates } from "@/lib/contextControllers/ButtonController";
 
 const className = {
   // the outer-most element of the button, or "master element"
-  self: "bg-0-inset text-0 inline-flex items-center align-middle rounded justify-center transition-colors w-fit text-sm px-1 hover:bg-button-0-hover",
+  self: "bg-0-inset text-0 inline-flex items-center align-middle rounded justify-center  w-fit text-sm px-1 hover:bg-button-0-hover",
 
   // the inner-container sitting between the outer-layer and button content
   inner: {
@@ -45,7 +45,7 @@ const renderIcon = (icon, iconClass) => {
   if (icon) {
     return (
       <Icon 
-      contextGroups={[ContextNames.ButtonGroup]}
+      contextGroups={[ContextNames.Button]}
       className={iconClass}
       utility 
       src={icon}
@@ -93,7 +93,6 @@ export const StatelessButton = ({
   }, ContextNames.Button)
 
   const finalClass = controller.useClassName(controller.getStateValues())
-  console.log("in button: ", controller.getState())
 
   return (
     <button 
@@ -101,7 +100,26 @@ export const StatelessButton = ({
     onClick={() => controller.dispatchMethod("onClick")}
     {...controller.getRestProps()}
     >
-      {renderButtonContent(finalClass, children)}
+      <Providers.Button
+      value={{
+        importedState: controller.getState(),
+      }}
+      >
+        {renderButtonContent(finalClass, children)}
+      </Providers.Button>
     </button>
   );
 };
+
+export const StatefulButton = (props) => {
+  const [selected, setSelected] = useState(false)
+
+  if (props.test) {
+    const [another, setAnother] = useState(true)
+    console.log(another)
+  }
+
+  return (
+    <StatelessButton onClick={() => setSelected(p => !p)} state={{[ButtonStates.Selected]: selected}} {...props}/>
+  )
+}
