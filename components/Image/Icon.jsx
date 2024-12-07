@@ -6,7 +6,7 @@ import { ContextNames } from "../Providers";
 
 const Icon = ({
   src, 
-  alt, 
+  alt="icon", 
   utility=false,
   fillWhenEmpty=false,
   // contextGroups=[],
@@ -29,6 +29,7 @@ const Icon = ({
     importedClassName,
     importedState, 
     src,
+    alt,
     fillWhenEmpty,
     ...rest,
   }, ContextNames.Icon);
@@ -55,7 +56,7 @@ const Icon = ({
                 ? "(min-width: 1024px) 192px, (min-width: 640px) 96px, 48px"
                 : "(min-width: 1024px) 512px, (min-width: 640px) 256px, 128px"
             }
-            alt={controller.updatedProps.alt || "icon"}
+            alt={controller.updatedProps.alt}
             />
           : <></>
       }

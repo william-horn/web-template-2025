@@ -1,4 +1,4 @@
-"use client"
+// "use client"
 
 import { useMemo } from "react"
 import { compileClass, mergeClasses } from "@/lib/util/mergeClassesV2"
@@ -12,6 +12,7 @@ import ButtonController from "@/lib/contextControllers/ButtonController"
 import ElementController from "@/lib/contextControllers/ElementController"
 import TextController from "@/lib/contextControllers/TextController"
 import IconController from "@/lib/contextControllers/IconController"
+import isClient from "@/lib/util/isClient"
 
 const contextControllers = {
   [ContextNames.ButtonGroup]: ButtonGroupController,
@@ -34,7 +35,7 @@ const ContextStatus = {
 
   Default context data for new context controller
 */
-class ContextController {
+export class ContextController {
   constructor(props, innateContext=ContextNames.Element) {
     // props directly passed to the button 
     const updatedProps = {...props}
@@ -71,17 +72,19 @@ class ContextController {
     this.contextControllers = {}
 
     // find the contexts
-    this.forEachContextGroup(contextEnum => {
-      // otherwise, check for other provider contexts
-      const context = useComponentContext(contextEnum)
+    if (isClient()) {
+      this.forEachContextGroup(contextEnum => {
+        // otherwise, check for other provider contexts
+        const context = useComponentContext(contextEnum)
 
-      // if no context exists, return out
-      if (!context) return;
+        // if no context exists, return out
+        if (!context) return;
 
-      // add the provider context to the table
-      providerContexts[contextEnum] = context
-      context.status = ContextStatus.Provider
-    })
+        // add the provider context to the table
+        providerContexts[contextEnum] = context
+        context.status = ContextStatus.Provider
+      })
+    }
 
     // create the controllers
     this.forEachContextGroup((contextEnum, withController) => {

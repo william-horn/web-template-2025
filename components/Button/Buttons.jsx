@@ -22,6 +22,7 @@ const className = {
   },
 
   leftIcon: {
+    // src: ""
     self: "",
     image: {
       self: "invert",
@@ -29,6 +30,7 @@ const className = {
   },
 
   rightIcon: {
+    // src: ""
     self: "",
     image: {
       self: "invert",
@@ -92,7 +94,8 @@ export const StatelessButton = ({
     ...rest
   }, ContextNames.Button)
 
-  const finalClass = controller.useClassName(controller.getStateValues())
+  // const finalClass = controller.useClassName(controller.getStateValues())
+  const finalClass = controller.compileClasses()
 
   return (
     <button 

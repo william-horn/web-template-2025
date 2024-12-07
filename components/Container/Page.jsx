@@ -12,13 +12,15 @@ const Page = React.forwardRef(function({
   state: importedState,
   ...rest
 }, ref) {
+
   const controller = useContextController({
-    className: mergeClasses("min-h-screen page", importedClassName),
+    className: "min-h-screen page",
+    importedClassName,
     importedState,
     contextGroups: [],
     ...rest,
   })
-  
+
   const finalClass = controller.useClassName(controller.getStateValues())
 
   return (

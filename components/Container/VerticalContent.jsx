@@ -8,7 +8,7 @@ import { mergeClasses, compileClass } from "@/lib/util/mergeClassesV2";
 // React
 import React from 'react';
 
-export const VerticalContent__Section = ({
+const Section = ({
   children,
   className: importedClassName,
   state: importedState,
@@ -32,7 +32,7 @@ export const VerticalContent__Section = ({
   );
 };
 
-export const VerticalContent__Remaining = ({
+const Remaining = ({
   children,
   className: importedClassName,
   state: importedState,
@@ -90,7 +90,7 @@ export const VerticalContent = ({
   );
 };
 
-VerticalContent.Section = VerticalContent__Section
-VerticalContent.Remaining = VerticalContent__Remaining
+VerticalContent.Section = Section
+VerticalContent.Remaining = Remaining
 
 export default VerticalContent
